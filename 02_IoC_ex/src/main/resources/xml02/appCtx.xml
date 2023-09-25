@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <!-- MyJdbcConnection 객체 만들기 -->
+  <bean class="com.gdu.app02.xml02.MyJdbcConnection" id="myJdbcConnection">
+    <constructor-arg value="oracle.jdbc.OracleDriver"/>
+    <constructor-arg value="jdbc:oracle:thin:@127.0.0.1:1521:xe"/>
+    <constructor-arg value="GD"/>
+    <constructor-arg value="1111"/>
+  </bean>
+
+  <!-- MyJdbcDao 객체 만들기 -->
+  <bean class="com.gdu.app02.xml02.MyJdbcDao" id="myJdbcDao"/>
+  
+  <!-- MyJdbcService 객체 만들기 -->
+  <bean class="com.gdu.app02.xml02.MyJdbcService" id="myJdbcService">
+    <property name="myJdbcDao" ref="myJdbcDao"/>
+  </bean>
+
+</beans>
