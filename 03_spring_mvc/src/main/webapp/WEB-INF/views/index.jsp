@@ -15,22 +15,45 @@
     <a href="${contextPath}/board/list.do">board 목록</a>
   </div>
   
+  <hr>
+  
   <%-- MyController02으로 요청 --%>
   <div>
     <a href="${contextPath}/notice/list.do">notice 목록</a>
     <br>
     <a href="${contextPath}/member/list.do">member 목록</a>
   </div>
-
+  
+  <hr>
+  
   <%-- MyController03으로 요청 --%>
   <div>
     <a href="${contextPath}/blog/detail.do?blogNo=100">블로그 상세보기</a> 
   </div>
   
+  <hr>  
+  
   <%-- MyController04으로 요청 --%>
   <div>
     <a href="${contextPath}/article/add.do?title=이럴수가">기사 등록하기</a> 
   </div>
+  
+  <hr>
+  
+  <%-- MyController05으로 요청 --%>
+  <div>
+    <form action="${contextPath}/faq/add.do" method="post">
+      <div>
+        <label for="title">제목</label>
+        <input type="text" id="title" name="title">
+      </div>
+      <div>
+        <button type="submit">작성완료</button>
+      </div>
+    </form>
+  </div>
+
+
 
 
 </body>
