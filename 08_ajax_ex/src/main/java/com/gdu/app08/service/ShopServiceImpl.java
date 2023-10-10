@@ -5,99 +5,76 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ShopServiceImpl implements ShopService {
 
   @Override
-  public Map<String, Object> openApi(String query, int display, String sort) {
-    
-    /*
-     * 네이버개발자센터 - 검색(블로그)
-     * 1. 요청주소 : https://openapi.naver.com/v1/search/shop.json
-     * 2. 요청변수
-     *    1) query   : 필수, 인코딩된 검색어
-     *    2) display : 선택, 10 (검색 결과의 개수)
-     *    3) start   : 선택, 1
-     *    4) sort    : 선택, sim (sim 또는 date)
-     */
-    
-    URL url = null;
-    HttpURLConnection con = null;
-    BufferedReader reader = null;
+  public ResponseEntity<String> getShoppingList(HttpServletRequest request) {
     
     try {
       
-      String spec = "https://openapi.naver.com/v1/search/shop.json";
-//      String query = "";
-//      String display = "10";
-//      String start = "1";
-//      String sort = "sim";
+      // 요청 파라미터
+      String query = request.getParameter("query");
+      String display = request.getParameter("display");
+      String sort = request.getParameter("sort");
+      
+      // 검색어 인코딩 UTF-8
+      query = URLEncoder.encode(query, "UTF-8");
+      
+      // 클라이언트 아이디, 시크릿 (네이버개발자센터에서 발급 받은 본인 정보 사용합니다.)
       String clientId = "rjH76EEaARpAfAoMykHW";
       String clientSecret = "rnU18PRe8Z";
       
-      StringBuilder sbUrl = new StringBuilder();
-      sbUrl.append(spec);
-      sbUrl.append("?query=").append(URLEncoder.encode(query, "UTF-8"));
-      sbUrl.append("&display=").append(display);
-//      sbUrl.append("&start=").append(start);
-      sbUrl.append("&sort=").append(sort);
+      // API 주소
+      String apiURL = "https://openapi.naver.com/v1/search/shop.json?query=" + query + "&display=" + display + "&sort=" + sort;
       
-      url = new URL(sbUrl.toString());
-      con = (HttpURLConnection) url.openConnection();
+      // URL
+      URL url = new URL(apiURL);
       
+      // HttpURLConnection
+      HttpURLConnection con = (HttpURLConnection)url.openConnection();
+
       // 요청 메소드
-      con.setRequestMethod("GET");  // 반드시 대문자 GET
+      con.setRequestMethod("GET");
       
-      // 요청 헤더
+      // 요청 헤더에 포함하는 내용
       con.setRequestProperty("X-Naver-Client-Id", clientId);
       con.setRequestProperty("X-Naver-Client-Secret", clientSecret);
       
-      int responseCode = con.getResponseCode();
-      if(responseCode != HttpURLConnection.HTTP_OK) {
-        throw new RuntimeException(responseCode + " 발생");
+      // 네이버 검색 API로부터 번역 결과를 받아 올 입력 스트림 생성
+      BufferedReader reader = null;
+      if(con.getResponseCode() == 200) {
+        reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+      } else {
+        reader = new BufferedReader(new InputStreamReader(con.getErrorStream()));
       }
       
-      reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-      
+      // 응답(네이버에서 알려준 검색결과)
       StringBuilder sb = new StringBuilder();
       String line = null;
       while((line = reader.readLine()) != null) {
-        sb.append(line + "\n");
+        sb.append(line);
       }
       
-      //TODO 응답데이터 받아오기
-        
-//      JSONObject obj = new JSONObject(sb.toString());
-//      JSONArray items = obj.getJSONArray("items");
-//      for(int i = 0, length = items.length(); i < length; i++) {
-//        JSONObject item = items.getJSONObject(i);
-//        System.out.println((i + 1) + "번째 블로그 검색 결과");
-//        System.out.println("제목: " + item.getString("title"));
-//        System.out.println("링크: " + item.getString("link"));
-//        System.out.println("요약: " + item.getString("description"));
-//        System.out.println("블로거: " + item.getString("bloggername"));
-//        System.out.println("블로거링크: " + item.getString("bloggerlink"));
-//        System.out.println("작성일: " + item.getString("postdate"));
-//      }
+      // 사용한 자원 반납
+      reader.close();
+      con.disconnect();
       
-    } catch (Exception e) {
-      e.printStackTrace();
-    } finally {
-      try {
-        if(reader != null) reader.close();
-        if(con != null) con.disconnect();
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
+      return new ResponseEntity<String>(sb.toString(), HttpStatus.OK);
+      
+    } catch(Exception e) {
+      
+      return new ResponseEntity<String>(HttpStatus.SERVICE_UNAVAILABLE);
+      
     }
-    return null;
+    
   }
-  
+
 }

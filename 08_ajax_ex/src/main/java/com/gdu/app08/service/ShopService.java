@@ -1,9 +1,9 @@
 package com.gdu.app08.service;
 
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.http.ResponseEntity;
 
 public interface ShopService {
-  
-  public Map<String, Object> openApi(String query, int display, String sort);
-  
+  public ResponseEntity<String> getShoppingList(HttpServletRequest request);
 }
