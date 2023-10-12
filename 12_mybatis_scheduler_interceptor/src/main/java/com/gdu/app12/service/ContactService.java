@@ -1,8 +1,8 @@
-package com.gdu.app11.service;
+package com.gdu.app12.service;
 
 import java.util.List;
 
-import com.gdu.app11.dto.ContactDto;
+import com.gdu.app12.dto.ContactDto;
 
 public interface ContactService {
   public int addContact(ContactDto contactDto);
@@ -11,4 +11,5 @@ public interface ContactService {
   public List<ContactDto> getContactList();
   public ContactDto getContactByNo(int contactNo);
   public void txTest();
+  public void deleteOldestContact();
 }

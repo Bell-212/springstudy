@@ -1,4 +1,4 @@
-package com.gdu.app11.dto;
+package com.gdu.app12.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
