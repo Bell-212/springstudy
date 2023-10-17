@@ -15,7 +15,15 @@ public interface MemberService {
   // 회원 목록
   public Map<String, Object> getMembers(int page);
   
+  // 회원 조회
+  public Map<String, Object> getMember(int memberNo);
   
+  // 회원 정보 수정
+  public Map<String, Object> modifyMember(MemberDto memberDto);
   
+  // 회원 삭제
+  public Map<String, Object> removeMember(int memberNo);
   
+  // 회원들 삭제
+  public Map<String, Object> removeMembers(String memberNoList);
 }

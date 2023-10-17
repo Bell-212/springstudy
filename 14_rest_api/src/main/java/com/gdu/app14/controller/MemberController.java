@@ -52,5 +52,27 @@ public class MemberController {
     return memberService.getMembers(page);
   }
   
+  // 회원 조회 요청
+  @RequestMapping(value="/members/{mNo}", method=RequestMethod.GET, produces="application/json")
+  public Map<String, Object> getMember(@PathVariable(value="mNo") int memberNo) {
+    return memberService.getMember(memberNo);
+  }
   
+  // 회원 정보 수정 요청
+  @RequestMapping(value="/members", method=RequestMethod.PUT, produces="application/json")
+  public Map<String, Object> modifyMember(@RequestBody MemberDto memberDto){
+    return memberService.modifyMember(memberDto);
+  }
+  
+  // 회원 정보 삭제 요청
+  @RequestMapping(value="/member/{memberNo}", method=RequestMethod.DELETE, produces="application/json")
+  public Map<String, Object> removeMember(@PathVariable(value="memberNo") int memberNo){
+    return memberService.removeMember(memberNo);
+  }
+  
+  // 회원들 정보 삭제 요청
+  @RequestMapping(value="/members/{memberNoList}", method=RequestMethod.DELETE, produces="application/json")
+  public Map<String, Object> removeMembers(@PathVariable(value="memberNoList") String memberNoList){
+    return memberService.removeMembers(memberNoList);
+  }
 }
