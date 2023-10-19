@@ -20,7 +20,7 @@ public class FileServiceImpl implements FileService {
   
   @Override
   public int upload(MultipartHttpServletRequest multipartRequest) {
-    
+
     // 첨부된 파일들의 목록
     List<MultipartFile> files = multipartRequest.getFiles("files");
     
@@ -32,7 +32,7 @@ public class FileServiceImpl implements FileService {
         
         try {
           
-          // 첨부 파일이 저장될 경로
+          // 첨부 파일이 저장될 경로 가져오기
           String path = myFileUtil.getPath();
           
           // 저장될 경로의 디렉터리 만들기
@@ -56,11 +56,14 @@ public class FileServiceImpl implements FileService {
         } catch (Exception e) {
           e.printStackTrace();
         }
+        
       }
+      
     }
+    
     return 0;
+    
   }
-
   
   @Override
   public Map<String, Object> ajaxUpload(MultipartHttpServletRequest multipartRequest) {
@@ -76,7 +79,7 @@ public class FileServiceImpl implements FileService {
         
         try {
           
-          // 첨부 파일이 저장될 경로
+          // 첨부 파일이 저장될 경로 가져오기
           String path = myFileUtil.getPath();
           
           // 저장될 경로의 디렉터리 만들기
@@ -100,9 +103,13 @@ public class FileServiceImpl implements FileService {
         } catch (Exception e) {
           e.printStackTrace();
         }
+        
       }
+      
     }
+    
     return Map.of("success", true);
+    
   }
   
   @Override
@@ -125,14 +132,24 @@ public class FileServiceImpl implements FileService {
     // File 객체를 참고하여, MultipartFile upload 첨부 이미지 저장
     try {
       upload.transferTo(file);
-    } catch (Exception e) {
+    } catch(Exception e) {
       e.printStackTrace();
     }
     
-    // CKEditor로 저장된 이미지를 확인할 수 있는 경로를 {"url": "http://localhost..."} 방식으로 반환해야 함
-    return Map.of("url", contextPath +  path + "/" + filesystemName,
-                   "uploaded", true);
+    // CKEditor로 저장된 이미지를 확인할 수 있는 경로를 {"url": "http://localhost:8080/app13/..."} 방식으로 반환해야 함
+    
+    System.out.println(contextPath + path + "/" + filesystemName);
+    
+    return Map.of("url", contextPath + path + "/" + filesystemName
+                , "uploaded", true);
+    /*
+     * CKEditor로 반환할 url
+     *   http://localhost:8080/app13/storage/2023/10/18/9daac47211bd4c1db87df59a52e3e0d6.jpg"
+     * 
+     * servlet-context.xml에 
+     *   /storage/** 주소로 요청을 하면  /storage/ 디렉터리의 내용을 보여주는 <resources> 태그를 추가한다.
+     */
+    
   }
-  
   
 }

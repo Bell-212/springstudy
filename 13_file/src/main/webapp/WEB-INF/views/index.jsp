@@ -158,7 +158,7 @@
     <h3>CKEditor</h3>
     <form method="post" action="${contextPath}/add.do">
       <div>
-        <textarea id="contents"></textarea>
+        <textarea name="contents" id="contents"></textarea>
       </div>
       <div>
         <button type="submit">전송</button>
