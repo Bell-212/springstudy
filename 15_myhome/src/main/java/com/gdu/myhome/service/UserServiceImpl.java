@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
       userMapper.insertAccess(email);
       // 메인페이지로 리다이렉트
       try {
-        response.sendRedirect(request.getContextPath() + "/main.do");
+        response.sendRedirect(request.getParameter("referer"));
       } catch (Exception e) {
         e.printStackTrace();
       }
