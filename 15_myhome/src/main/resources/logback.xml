@@ -8,7 +8,7 @@
     <!-- Console에 로그를 찍는 Appender -->
 	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
       <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-        <layout class="com.gdu.myhome.logback.MyLogBackLayout" />
+        <layout class="com.gdu.myhome.logback.MyLogbackLayout" />
       </encoder>
 	</appender>
     
@@ -21,7 +21,7 @@
         <totalSizeCap>3GB</totalSizeCap>
       </rollingPolicy>
       <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-        <layout class="com.gdu.myhome.logback.MyLogBackLayout" />
+        <layout class="com.gdu.myhome.logback.MyLogbackLayout" />
       </encoder>
     </appender>
   
