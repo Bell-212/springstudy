@@ -30,6 +30,12 @@
       <li><a href="${contextPath}">자동로그인</a>
       <li><a href="${contextPath}/user/find.form">아이디/비밀번호 찾기</a>
     </ul>
+    <hr>
+    <div>
+      <a href="${naverLoginURL}">
+        <img src="${contextPath}/resources/image/btnG_아이콘사각.png" width="100px">
+      </a>
+    </div>
   </div>
 
 <%@ include file="../layout/footer.jsp" %>
