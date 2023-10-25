@@ -194,6 +194,76 @@ public class UserServiceImpl implements UserService {
   }
   
   
+  @Override
+  public UserDto getUser(String email) {
+    return userMapper.getUser(Map.of("email", email));
+  }
+  
+  @Override
+  public void naverJoin(HttpServletRequest request, HttpServletResponse response) {
+    
+    String email = request.getParameter("email");
+    String name = request.getParameter("name");
+    String gender = request.getParameter("gender");
+    String mobile = request.getParameter("mobile");
+    String event = request.getParameter("event");
+    
+    UserDto user = UserDto.builder()
+                    .email(email)
+                    .name(name)
+                    .gender(gender)
+                    .mobile(mobile.replace("-", ""))
+                    .agree(event != null ? 1 : 0)
+                    .build();
+    
+    int naverJoinResult = userMapper.insertNaverUser(user);
+    
+    try {
+      
+      response.setContentType("text/html; charset=UTF-8");
+      PrintWriter out = response.getWriter();
+      out.println("<script>");
+      if(naverJoinResult == 1) {
+        request.getSession().setAttribute("user", userMapper.getUser(Map.of("email", email)));
+        userMapper.insertAccess(email);
+        out.println("alert('네이버 간편가입이 완료되었습니다.')");
+      } else {
+        out.println("alert('네이버 간편가입이 실패했습니다.')");
+      }
+      out.println("location.href='"+ request.getContextPath() + "/main.do'");
+      out.println("</script>");
+      out.flush();
+      out.close();
+      
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+  
+  @Override
+  public void naverLogin(HttpServletRequest request, HttpServletResponse response, UserDto naverProfile) throws Exception {
+    
+    String email = naverProfile.getEmail();
+    Map<String, Object> map = Map.of("email", email);
+    UserDto user = userMapper.getUser(map);
+    
+    if(user != null) {
+      // 세션에 유저 정보 올리기 
+      request.getSession().setAttribute("user", user);
+      userMapper.insertAccess(email);
+    } else {
+        response.setContentType("text/html; charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        out.println("<script>");
+        out.println("alert('일치하는 회원 정보가 없습니다.')");
+        out.println("location.href='"+ request.getContextPath() +"/main.do'");
+        out.println("</script>");
+        out.flush();
+        out.close();
+    }
+    
+  }
+  
   
   
   @Override
