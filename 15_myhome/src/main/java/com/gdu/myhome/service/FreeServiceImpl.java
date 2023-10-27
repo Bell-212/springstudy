@@ -101,7 +101,7 @@ public class FreeServiceImpl implements FreeService {
     return freeMapper.deleteFree(freeNo);
   }
   
-  
+  @Transactional(readOnly = true)
   @Override
   public void loadSearchList(HttpServletRequest request, Model model) {
     
@@ -129,7 +129,7 @@ public class FreeServiceImpl implements FreeService {
     List<FreeDto> freeList = freeMapper.getSearchList(map);
     
     model.addAttribute("freeList", freeList);
-    model.addAttribute("paging", myPageUtils.getMvcPaging(request.getContextPath() + "/free/list.do"));
+    model.addAttribute("paging", myPageUtils.getMvcPaging(request.getContextPath() + "/free/search.do" , "column=" + column + "&query=" + query));
     model.addAttribute("beginNo", total - (page - 1) * display);
     
     // http://localhost:8080/myhome/free/search.do?column=EMAIL&query=user1&page=2 로 넘겨야함  

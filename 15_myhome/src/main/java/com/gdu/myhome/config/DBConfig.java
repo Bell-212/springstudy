@@ -25,7 +25,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @EnableAspectJAutoProxy       // @Aspect 허용
 @EnableScheduling             // @Scheduled 허용
 @Configuration
-public class AppConfig {
+public class DBConfig {
 
   @Autowired
   private Environment env;
