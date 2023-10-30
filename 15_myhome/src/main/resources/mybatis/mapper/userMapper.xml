@@ -13,6 +13,7 @@
       <if test="pw != null">AND PW = #{pw}</if>      
       <if test="userNo != null">AND USER_NO = #{userNo}</if>
       <if test="name != null">AND NAME = #{name}</if>
+      <if test="mobile != null">AND MOBILE = #{mobile}</if>
     </where>
   </select>
   

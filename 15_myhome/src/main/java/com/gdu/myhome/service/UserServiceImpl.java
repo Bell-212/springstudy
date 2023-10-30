@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -20,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import com.gdu.myhome.dao.UserMapper;
 import com.gdu.myhome.dto.InactiveUserDto;
@@ -66,7 +68,7 @@ public class UserServiceImpl implements UserService {
     
     if(user != null) {
       // 세션에 유저 정보 올리기 
-      session.setAttribute("user", user);
+      request.getSession().setAttribute("user", user);
       // 접속 기록 남기기
       userMapper.insertAccess(email);
       // 메인페이지로 리다이렉트
@@ -527,6 +529,21 @@ public class UserServiceImpl implements UserService {
     } catch (Exception e) {
       e.printStackTrace();
     }
+  }
+  
+  
+  @Override
+  public void find(HttpServletRequest request, Model model) {
+    String name = request.getParameter("name");
+    String mobile = request.getParameter("mobile");
+    
+    Map<String, Object> map = new HashMap<>();
+    map.put("name", name);
+    map.put("mobile", mobile);
+    
+    UserDto user = userMapper.getUser(map);
+    
+    model.addAttribute("user", user);
   }
   
   

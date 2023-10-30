@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gdu.myhome.dto.UserDto;
 import com.gdu.myhome.service.UserService;
@@ -151,6 +152,9 @@ public class UserController {
     userService.active(session, request, response);
   }
   
-  
+  @PostMapping("/find.do")
+  public void find(HttpServletRequest request, Model model){
+    userService.find(request, model);
+  }
   
 }

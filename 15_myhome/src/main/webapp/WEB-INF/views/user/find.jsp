@@ -30,4 +30,17 @@
 
 </div>
 
+<script>
+	const fnFindId = ()=>{
+		$('frm_find_id').submit(()=>{
+		})
+	}
+	
+</script>
+
+
+
+
+
+
 <%@ include file="../layout/footer.jsp" %>

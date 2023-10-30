@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 
 import com.gdu.myhome.dto.UserDto;
 
@@ -29,4 +30,5 @@ public interface UserService {
   public void inactiveUserBatch();
   public void active(HttpSession session, HttpServletRequest request, HttpServletResponse response);
   
+  public void find(HttpServletRequest request, Model model); 
 }
