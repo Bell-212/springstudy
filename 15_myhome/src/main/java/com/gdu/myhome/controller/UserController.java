@@ -152,9 +152,10 @@ public class UserController {
     userService.active(session, request, response);
   }
   
-  @PostMapping("/find.do")
-  public void find(HttpServletRequest request, Model model){
-    userService.find(request, model);
+  @ResponseBody
+  @PostMapping(value="/find.do", produces="application/json")
+  public Map<String, Object> find(HttpServletRequest request){
+    return userService.find(request);
   }
   
 }

@@ -30,5 +30,5 @@ public interface UserService {
   public void inactiveUserBatch();
   public void active(HttpSession session, HttpServletRequest request, HttpServletResponse response);
   
-  public void find(HttpServletRequest request, Model model); 
+  public Map<String, Object> find(HttpServletRequest request); 
 }

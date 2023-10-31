@@ -533,18 +533,17 @@ public class UserServiceImpl implements UserService {
   
   
   @Override
-  public void find(HttpServletRequest request, Model model) {
-    String name = request.getParameter("name");
-    String mobile = request.getParameter("mobile");
+  public Map<String, Object> find(HttpServletRequest request) {
+    String name = mySecurityUtils.preventXSS(request.getParameter("name"));
+    String mobile = mySecurityUtils.preventXSS(request.getParameter("mobile"));
     
-    Map<String, Object> map = new HashMap<>();
+    Map<String, Object> map = new HashMap<String, Object>();
     map.put("name", name);
     map.put("mobile", mobile);
     
     UserDto user = userMapper.getUser(map);
+    return Map.of("user", user);
     
-    model.addAttribute("user", user);
   }
-  
   
 }
