@@ -12,26 +12,26 @@
 
 <script src="${contextPath}/resources/js/user_modify.js?dt=${dt}"></script>
 
-<div>
+<div >
 
   <form id="frm_mypage" method='post'>
     
     <h1>마이페이지</h1>
     
-    <div>
-      <button type="button" id="btn_modify_pw">비밀번호변경</button>
+    <div >
+      <button type="button" id="btn_modify_pw" class="btn btn-primary btn-sm">비밀번호변경</button>
     </div>
     
     <div>이메일 : ${sessionScope.user.email}</div>
     <div>가입일 : ${sessionScope.user.joinedAt}</div>
     
-    <div>
+    <div class="form-floating mb-3"> 
+      <input type="text" name="name" id="name" class="form-control" value="${sessionScope.user.name}">
       <label for="name">이름</label>
-      <input type="text" name="name" id="name" value="${sessionScope.user.name}">
       <span id="msg_name"></span>
     </div>
     
-    <div>
+    <div >
       <input type="radio" name="gender" value="NO" id="none">
       <label for="none">선택안함</label>
       <input type="radio" name="gender" value="M" id="man">
@@ -43,9 +43,9 @@
       $(':radio[value=${sessionScope.user.gender}]').prop('checked', true);
     </script>
     
-    <div>
+    <div class="form-floating mb-3">
+      <input type="text" name="mobile" id="mobile" class="form-control" value="${sessionScope.user.mobile}">
       <label for="mobile">휴대전화번호</label>
-      <input type="text" name="mobile" id="mobile" value="${sessionScope.user.mobile}">
       <span id="msg_mobile"></span>
     </div>
     

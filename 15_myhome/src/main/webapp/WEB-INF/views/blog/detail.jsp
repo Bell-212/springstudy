@@ -36,8 +36,10 @@
       <c:if test="${sessionScope.user.userNo == blog.userDto.userNo}">
         <form id="frm_btn" method="post">
           <input type="hidden" name="blogNo" value="${blog.blogNo}">
-          <button type="button" id="btn_edit">편집</button>
-          <button type="button" id="btn_remove">삭제</button>
+          <input type="hidden" name="title" value="${blog.title}">
+          <input type="hidden" name="contents" value='${blog.contents}'>
+          <button type="button" id="btn_edit" class="btn btn-outline-secondary">편집</button>
+          <button type="button" id="btn_remove" class="btn btn-outline-danger">삭제</button>
         </form>
       </c:if>
     </div>
@@ -156,7 +158,7 @@
     					str += '<div>' + c.contents + '</div>';
     					str += '<div style="font-size: 12px;">' + c.createdAt + '</div>';
     					if(c.depth === 0){
-    						str += '<div><button type="button" class="btn_open_reply">답글달기</button></div>';
+    						str += '<div><button type="button" class="btn_open_reply btn btn-outline-secondary btn-sm">답글달기</button></div>';
     					}
     					/************************답글 입력창************************/
     					str += ' <div class="blind frm_add_reply_wrap">';

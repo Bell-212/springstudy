@@ -66,11 +66,15 @@
 				totalPage = resData.totalPage;
 				
 				$.each(resData.uploadList, (i, upload)=>{
-					let str = '<div class="upload">';
-					str += '<div>제목: ' + upload.title + '</div>';
-					str += '<div>작성: ' + upload.userDto.name + '</div>';
-					str += '<div>생성: ' + upload.createdAt + '</div>';
-					str += '<div>첨부: ' + upload.attachCount + '</div>';
+					let str = '<div class="upload border border-3 rounded-4 border-dark-subtle" data-upload_no="' + upload.uploadNo + '">';
+					str += ' <div>제목: ' + upload.title + '</div>';
+					if(upload.userDto === null){
+						str += ' <div>작성: 정보없음 </div>';	
+					} else {
+    					str += ' <div>작성: ' + upload.userDto.name + '</div>';
+					}
+					str += ' <div>생성: ' + upload.createdAt + '</div>';
+					str += ' <div>첨부: ' + upload.attachCount + '</div>';
 					str += '</div>';
 					$('#upload_list').append(str);
 				})
@@ -112,7 +116,7 @@
 		if(addResult != ''){
 			if(addResult === 'true'){
 				alert('성공적으로 업로드 되었습니다.');
-				//$('#upload_list').empty();
+				$('#upload_list').empty();
 				//fnGetUploadList();
 			} else {
 				alert('업로드가 실패하였습니다.');
@@ -120,12 +124,19 @@
 		}
 	}
 	
-
+	const fnDetail = ()=>{
+		$(document).on('click', '.upload', function(){
+			location.href = '${contextPath}/upload/detail.do?uploadNo=' + $(this).data('upload_no');
+		})
+	}
+	
+	
+	
 	
 	fnGetUploadList();
 	fnScroll(); 
 	fnAddResult();
-	
+	fnDetail();
 	
 	
 	

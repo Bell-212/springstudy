@@ -27,7 +27,7 @@
   <hr>
   
   <div>
-    <table border="1" class="table table-dark table-striped table-hover">
+    <table border="1" class="table table-dark table-striped">
       <thead>
         <tr>
           <td>순번</td>
@@ -53,12 +53,12 @@
                 <!-- 게시글내용 -->
                 ${free.contents}
                 <!-- 댓글작성버튼 -->
-                <button type="button" class="btn_reply">댓글</button>
+                <button type="button" class="btn_reply btn btn-outline-light btn-sm">댓글</button>
                 <!-- 게시글삭제버튼 -->
                 <form class="frm_remove" method="post" action="${contextPath}/free/remove.do" style="display: inline;">
                   <c:if test="${free.email == sessionScope.user.email}">                  
                     <input type="hidden" name="freeNo" value="${free.freeNo}">
-                    <button type="submit">삭제</button>
+                    <button type="submit" class="btn_reply btn btn-outline-danger btn-sm">삭제</button>
                   </c:if>
                 </form>
               </td>
@@ -74,19 +74,19 @@
           <tr class="blind write_tr">
             <td colspan="4">
               <form method="post" action="${contextPath}/free/addReply.do">
-                <div>
-                  <label for="email">작성자</label>
-                  <input type="text" name="email" id="email" value="${sessionScope.user.email}" readonly>
+                <div >
+                  <label for="email" style="color: lightgray;">작성자</label>
+                  <input type="text" name="email" id="email"  value="${sessionScope.user.email}" readonly>
                 </div>
                 <div>
-                  <label for="contents">내용</label>
+                  <label for="contents" style="color: lightgray;">내용</label>
                   <input type="text" name="contents" id="contents">
                 </div>
                 <div>
                   <input type="hidden" name="depth" value="${free.depth}">
                   <input type="hidden" name="groupNo" value="${free.groupNo}">
                   <input type="hidden" name="groupOrder" value="${free.groupOrder}">
-                  <button type="submit">댓글달기</button>
+                  <button type="submit" class="btn btn-outline-light btn-sm">댓글달기</button>
                 </div>
               </form>
             </td>
