@@ -124,6 +124,18 @@
 		}
 	}
 	
+	const fnRemoveResult = ()=>{
+		let removeResult = '${removeResult}'; 
+		if(removeResult != ''){
+			if(removeResult === '1'){
+				alert('게시글이 삭제되었습니다.');
+				$('#upload_list').empty();
+			} else {
+				alert('게시글 삭제가 실패하였습니다.');
+			}
+		}
+	}
+	
 	const fnDetail = ()=>{
 		$(document).on('click', '.upload', function(){
 			location.href = '${contextPath}/upload/detail.do?uploadNo=' + $(this).data('upload_no');
@@ -136,6 +148,7 @@
 	fnGetUploadList();
 	fnScroll(); 
 	fnAddResult();
+	fnRemoveResult();
 	fnDetail();
 	
 	
