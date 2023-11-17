@@ -1,0 +1,176 @@
+- 서버 1대
+- 프로젝트 4개를 배포해야 함
+- 톰캣 4개가 필요함
+- 톰캣 프로그램을 하나의 컴퓨터에 각각 격리된 컨테이너 형식으로
+추가하고 실행하는 것
+---------------------------------------------------------------
+도커(docker)
+- 리눅스에서만 동작
+- 윈도우즈 하위 시스템 리눅스이 필요함 (wsl)
+- WSL2 활성화 -> WSL 설치 -> 리눅스 커널 업데이트 -> 도커 데스크탑 설치
+- WSL2 활성화
+  [제어판] - [프로그램 및 기능] -[Windows 기능 켜기/끄기]
+  Linux용 Windows 하위 시스템
+  가상 머신 플랫폼
+- WSL 설치
+  명령 프롬프트(cmd)
+  wsl --update (업데이트)
+  wsl -l -o (설치 가능한 리눅스 배포판 확인)
+  wsl --install -d Ubuntu (리눅스 배포판 중에서 Ubuntu 설치)
+  USERNAME : goodee
+  PASSWORD : 1111
+- 리눅스 커널 업데이트(다운로드 후 설치)
+  https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi
+- 도커 데스크탑 설치
+  https://docs.docker.com/desktop/install/windows-install/
+---------------------------------------------------------------
+도커 기본 용어
+- 컨테이너 : 프로그램
+- 이미지   : 컨테이너를 만들기 위한 재료
+---------------------------------------------------------------
+도커 명령어 형식
+docker 상위명령 하위명령 [옵션] 대상 인자
+
+1. 이미지 내려 받기
+1) 원하는 이미지 검색
+docker search 이미지명
+2) 이미지 내려 받기
+docker image pull 이미지명      (가장 최근 이미지를 내려 받음)
+docker image pull 이미지명:태그 (원하는 버전을 내려 받음, 태그=버전)
+
+2. 내려 받은 이미지 목록 확인
+docker image ls
+docker images
+
+3. 이미지 삭제하기
+docker image remove 이미지명
+
+4. 컨테이너 만들기 (tomcat 이미지 사용)
+docker container create 옵션 이미지명:태그
+docker container create --name 컨테이너명 -p 호스트포트:컨테이너포트 이미지명:태그
+
+5. 컨테이너 목록 확인
+docker container ls
+docker container ls -a
+
+6. 컨테이너 실행(시작)
+docker container start 컨테이너이름
+
+7. 컨테이너 중지
+docker container stop 컨테이너이름
+
+8. 컨테이너 삭제
+docker container remove 컨테이너이름
+
+---------------------------------------------------------------
+
+축약 명령
+
+1. 컨테이너 실행(docker image pull + docker container create + docker container start)
+docker [container] run 옵션 이미지명:태그
+
+docker run -d --name tomcat -p 8080:8080 tomcat:9.0
+  -d : 백그라운드 실행
+  --name : 컨테이너이름 지정
+  -p : 호스트포트:컨테이너포트
+
+2. 컨테이너 삭제(docker container stop + docker container remove)
+docker [container] rm 컨테이너이름
+
+---------------------------------------------------------------
+
+openjdk 설치(cmd에서 wsl 입력 후 리눅스 진입 후 작업 수행)
+
+1. 패키지 목록 업데이트
+sudo apt-get update
+
+2. jdk 검색
+apt search openjdk
+
+3. jdk 설치
+sudo apt-get -y install openjdk-11-jdk
+
+4. 설치 경로 확인
+update-alternatives --list java
+
+5. JAVA_HOME / Path 설정
+vi ~/.bashrc
+화면 열리면 방향키로 맨 아래로 이동 후
+입력모드 진입을 위해 o
+입력모드에서
+# JAVA_HOME
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export PATH=$JAVA_HOME/bin:$PATH
+입력이 끝나면 esc -> :(세미콜론) -> wq -> 엔터
+
+6. JAVA_HOME / PATH 설정 적용하기
+source ~/.bashrc
+
+---------------------------------------------------------------
+
+oracle 18c xe 설치
+
+1. git 설치
+sudo apt-get -y install git
+
+2. github.com/oracle의 docker-images 레파지토리 복제하기
+git clone https://github.com/oracle/docker-images
+
+3. oracle 이미지를 만들어 주는 스크립트 파일 실행하기
+docker-images/OracleDatabase/SingleInstance/dockerfiles/buildContainerImage.sh -v 18.4.0 -x
+
+  -v 18.4.0    : oracle 18c 버전 의미
+  -x           : Express Edition 의미
+
+4. 생성된 이미지 확인
+docker images
+
+5. 컨테이너 실행
+docker run -d --name oracle-xe-18c -p 15210:1521 -e ORACLE_PWD=1111 oracle/database:18.4.0-xe
+
+6. 컨테이너 실행 확인
+docker ps
+컨테이너 상태(STATUS)가 healthy가 될 때까지 기다려야 함
+
+7. sqldeveloper 열고 SYS 접속 생성하기
+접속이름 : 오라클컨테이너_SYS
+사용자 : SYS
+비밀번호 : 1111
+롤 : SYSDBA
+포트번호 : 15210 (5번 과정에서 호스트 포트번호를 15210으로 수정했기 때문)
+
+GD 계정 만들기
+ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE;
+CREATE USER GD IDENTIFIED BY 1111;
+GRANT DBA TO GD;
+
+GD 접속 생성하기
+접속이름 : 오라클컨테이너_GD
+사용자 : GD
+비밀번호 : 1111
+포트번호 : 15210
+
+8. sqldeveloper 열고 오라클컨테이너_GD 계정에 테이블/시퀀스 설치하기
+
+---------------------------------------------------------------
+
+윈도우에 있는 war 파일을 리눅스 서버로 복사하기(powershell 열고 작업)
+
+1. war 있는 곳으로 이동
+cd C:\GDJ69\springstudy\15_myhome\target
+
+2. 리눅스 서버로 war 복사 (홈디렉토리로 복사)
+scp myhome.war goodee@서버주소:/home/goodee
+
+---------------------------------------------------------------
+
+리눅스에 있는 war 파일을 tomcat 컨테이너에 배포하기
+
+1. war 파일을 tomcat 컨테이너 내부로 복사
+docker cp myhome.war tomcat:/usr/local/tomcat/webapps
+
+2. tomcat 컨테이너 내부로 들어가기
+docker exec -it tomcat bash
+
+3. tomcat 실행
+./bin/startup.sh
